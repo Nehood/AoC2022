@@ -1,6 +1,6 @@
 package org.advent2022
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -25,7 +25,7 @@ internal class Day4CampCleanupTest {
     }
 
     @Test
-    fun findFullyContainedAssignmentsTest(){
+    fun findFullyContainedAssignmentsTest() {
         val input = """
             2-4,6-8
             2-3,4-5
@@ -37,19 +37,19 @@ internal class Day4CampCleanupTest {
         val countOfFullyContainedAssignmentPairs = day4CampCleanup.findFullyContainedAssignments(parseLines(input))
         val expected = 2
 
-        Assertions.assertEquals(expected, countOfFullyContainedAssignmentPairs)
+        assertEquals(expected, countOfFullyContainedAssignmentPairs)
     }
 
     @Test
-    fun findFullyContainedAssignments(){
+    fun findFullyContainedAssignments() {
         val countOfFullyContainedAssignmentPairs = day4CampCleanup.findFullyContainedAssignments(readResourceFile())
         val expected = 503
 
-        Assertions.assertEquals(expected, countOfFullyContainedAssignmentPairs)
+        assertEquals(expected, countOfFullyContainedAssignmentPairs)
     }
 
     @Test
-    fun findOverlappingAssignmentsTest(){
+    fun findOverlappingAssignmentsTest() {
         val input = """
             2-4,6-8
             2-3,4-5
@@ -61,14 +61,14 @@ internal class Day4CampCleanupTest {
         val countOfFullyContainedAssignmentPairs = day4CampCleanup.findOverlappingAssignments(parseLines(input))
         val expected = 4
 
-        Assertions.assertEquals(expected, countOfFullyContainedAssignmentPairs)
+        assertEquals(expected, countOfFullyContainedAssignmentPairs)
     }
 
     @Test
-    fun findOverlappingAssignments(){
+    fun findOverlappingAssignments() {
         val countOfFullyContainedAssignmentPairs = day4CampCleanup.findOverlappingAssignments(readResourceFile())
         val expected = 827
 
-        Assertions.assertEquals(expected, countOfFullyContainedAssignmentPairs)
+        assertEquals(expected, countOfFullyContainedAssignmentPairs)
     }
 }

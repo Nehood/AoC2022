@@ -1,11 +1,10 @@
 package org.advent2022
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class Day5SupplyStacksTest{
+internal class Day5SupplyStacksTest {
 
     private val day5SupplyStacks = Day5SupplyStacks()
     private val inputFileName = "Day5Input.txt"
@@ -20,7 +19,7 @@ internal class Day5SupplyStacksTest{
         val stacksTopItems = day5SupplyStacks.rearrangeCrates(readResourceFile())
         val expected = "PSNRGBTFT"
 
-        Assertions.assertEquals(expected, stacksTopItems)
+        assertEquals(expected, stacksTopItems)
     }
 
     @Test
@@ -28,7 +27,7 @@ internal class Day5SupplyStacksTest{
         val stacksTopItems = day5SupplyStacks.rearrangeCrates(readResourceFile(), true)
         val expected = "BNTZFPMMW"
 
-        Assertions.assertEquals(expected, stacksTopItems)
+        assertEquals(expected, stacksTopItems)
     }
 
 }
