@@ -1,6 +1,6 @@
 package org.advent2022
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -27,14 +27,14 @@ internal class Day6TuningTroubleTest {
     fun findFirstStartOfPacketMarkerTest(buffer: String, expectedLocation: String) {
         val firstStartOfPacketMarker = day6TuningTrouble.findFirstStartOfPacketMarker(buffer)
 
-        Assertions.assertEquals(expectedLocation.toInt(), firstStartOfPacketMarker)
+        assertEquals(expectedLocation.toInt(), firstStartOfPacketMarker)
     }
 
     @Test
     fun findFirstStartOfPacketMarker() {
         val firstStartOfPacketMarker = day6TuningTrouble.findFirstStartOfPacketMarker(readResourceFile())
         val expected = 1647
-        Assertions.assertEquals(expected, firstStartOfPacketMarker)
+        assertEquals(expected, firstStartOfPacketMarker)
     }
 
     @ParameterizedTest
@@ -46,15 +46,15 @@ internal class Day6TuningTroubleTest {
         "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw,26"
     )
     fun findFirstStartOfPacketMarkerMessageTest(buffer: String, expectedLocation: String) {
-        val firstStartOfPacketMarker = day6TuningTrouble.findFirstStartOfPacketMarker(buffer, 10)
+        val firstStartOfPacketMarker = day6TuningTrouble.findFirstStartOfPacketMarker(buffer, 14)
 
-        Assertions.assertEquals(expectedLocation.toInt(), firstStartOfPacketMarker)
+        assertEquals(expectedLocation.toInt(), firstStartOfPacketMarker)
     }
 
     @Test
     fun findFirstStartOfPacketMarkerMessage() {
-        val firstStartOfPacketMarker = day6TuningTrouble.findFirstStartOfPacketMarker(readResourceFile(), 10)
+        val firstStartOfPacketMarker = day6TuningTrouble.findFirstStartOfPacketMarker(readResourceFile(), 14)
         val expected = 2447
-        Assertions.assertEquals(expected, firstStartOfPacketMarker)
+        assertEquals(expected, firstStartOfPacketMarker)
     }
 }

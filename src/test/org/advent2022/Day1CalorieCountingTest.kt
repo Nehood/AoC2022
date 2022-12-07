@@ -9,9 +9,9 @@ internal class Day1CalorieCountingTest {
     private val day1CalorieCounting = Day1CalorieCounting()
     private val inputFileName = "Day1Input.txt"
 
-    private fun readResourceFile(fileName: String): List<List<Int>> {
+    private fun readResourceFile(): List<List<Int>> {
         val resourcesPath = "src/test/resources"
-        val lines = File("$resourcesPath/$fileName").readLines()
+        val lines = File("$resourcesPath/$inputFileName").readLines()
         val listOfLists = mutableListOf<List<Int>>()
         val list = mutableListOf<Int>()
         for (line: String in lines) {
@@ -29,8 +29,7 @@ internal class Day1CalorieCountingTest {
 
     @Test
     fun countCaloriesOfFattestElf() {
-        val calories = readResourceFile(inputFileName)
-        val fattestElfCalories = day1CalorieCounting.countCaloriesOfFattestElf(calories)
+        val fattestElfCalories = day1CalorieCounting.countCaloriesOfNOfFattestElves(readResourceFile())
         val expected = 72240
 
         assertEquals(expected, fattestElfCalories)
@@ -38,8 +37,7 @@ internal class Day1CalorieCountingTest {
 
     @Test
     fun countCaloriesOfFattest3Elves() {
-        val calories = readResourceFile(inputFileName)
-        val fattestElvesCalories = day1CalorieCounting.countCaloriesOfNOfFattestElves(calories)
+        val fattestElvesCalories = day1CalorieCounting.countCaloriesOfNOfFattestElves(readResourceFile(), 3)
         val expected = 210957
 
         assertEquals(expected, fattestElvesCalories)
