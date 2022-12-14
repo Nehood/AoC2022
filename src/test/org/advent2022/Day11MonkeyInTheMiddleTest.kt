@@ -1,9 +1,9 @@
 package org.advent2022
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.math.BigInteger
-import kotlin.test.assertEquals
 
 class Day11MonkeyInTheMiddleTest {
 
