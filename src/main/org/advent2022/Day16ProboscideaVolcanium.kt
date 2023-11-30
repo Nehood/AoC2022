@@ -10,6 +10,13 @@ class Day16ProboscideaVolcanium {
         return releaseMostPressure(allPaths, startingValve)
     }
 
+    fun releaseMostPressureWithElephant(scan: List<String>): Int {
+        val valves = scan.readScan()
+        val startingValve = "AA"
+        val allPaths = valves.associate { it.label to Dijkstra(valves.associateBy { valve -> valve.label }, it.label) }
+        return releaseMostPressureWithElephant(allPaths, startingValve)
+    }
+
     private fun List<String>.readScan(): List<Day16Valve> {
         val parts = this.map { it.split("; ") }
         val valves = parts.map { it[0].split(" has flow rate=") }
@@ -26,6 +33,75 @@ class Day16ProboscideaVolcanium {
     private fun releaseMostPressure(allPaths: Map<String, Map<Day16Valve, Int>>, startingValveLabel: String): Int {
         val time = 30
         return releaseMostPressureHelper(allPaths, startingValveLabel, time, emptySet(), 0, 0)
+    }
+
+    private fun releaseMostPressureWithElephant(allPaths: Map<String, Map<Day16Valve, Int>>, startingValveLabel: String): Int {
+        val time = 6
+        return releaseMostPressureWithElephantHelper(allPaths, time, startingValveLabel, startingValveLabel, time, time, emptyMap())
+    }
+
+    private fun releaseMostPressureWithElephantHelper(
+        allPaths: Map<String, Map<Day16Valve, Int>>,
+        fullTime: Int,
+        myValveLabel: String,
+        elephantValveLabel: String,
+        myRemainingTime: Int,
+        elephantRemainingTime: Int,
+        openedValves: Map<String, Int>
+    ): Int {
+//        if (openedValves.any { it.key == "DD" && it.value == fullTime - 2 } &&
+//            openedValves.any { it.key == "JJ" && it.value == fullTime - 3 } &&
+//            openedValves.any { it.key == "BB" && it.value == fullTime - 7 } &&
+//            openedValves.any { it.key == "HH" && it.value == fullTime - 7 } &&
+//            openedValves.any { it.key == "CC" && it.value == fullTime - 9 } &&
+//            openedValves.any { it.key == "EE" && it.value == fullTime - 11 }) {
+//            println("me: $myValveLabel ${fullTime - myRemainingTime} elephant: $elephantValveLabel ${fullTime - elephantRemainingTime} $openedValves")
+//        }
+        //println("me: $myValveLabel ${fullTime - myRemainingTime} elephant: $elephantValveLabel ${fullTime - elephantRemainingTime} $openedValves")
+        val myCurrentPaths = allPaths[myValveLabel]!!
+        val elephantCurrentPaths = allPaths[elephantValveLabel]!!
+        val myPossibleMeaningfulPaths =
+            myCurrentPaths.filter { it.key.flowRate != 0 }.filter { !openedValves.containsKey(it.key.label) }
+        val elephantPossibleMeaningfulPaths =
+            elephantCurrentPaths.filter { it.key.flowRate != 0 }.filter { !openedValves.containsKey(it.key.label) }
+                .toMutableMap()
+        if (myPossibleMeaningfulPaths.isEmpty() || elephantPossibleMeaningfulPaths.isEmpty()) {
+            return openedValves.summarizePressureReleased(allPaths[myValveLabel]!!.keys.associateBy { it.label })
+        }
+
+        return myPossibleMeaningfulPaths.flatMap { myPath ->
+            elephantPossibleMeaningfulPaths.filterNot { myPossibleMeaningfulPaths.size > 1 && myPath.key.label == it.key.label }.map { elephantPath ->
+                if (myPath.value + 1 < myRemainingTime || elephantPath.value + 1 < elephantRemainingTime) {
+                    val currentlyOpenedValves = openedValves.toMutableMap()
+                    val myNewRemainingTime = if (myPath.value + 1 < myRemainingTime) {
+                        val myAdjustedTime = myRemainingTime - (myPath.value + 1)
+                        currentlyOpenedValves[myPath.key.label] = myAdjustedTime
+                        myAdjustedTime
+                    } else myRemainingTime
+                    val elephantNewRemainingTime = if (elephantPath.value + 1 < elephantRemainingTime) {
+                        val elephantAdjustedTime = elephantRemainingTime - (elephantPath.value + 1)
+                        currentlyOpenedValves[elephantPath.key.label] = elephantAdjustedTime
+                        elephantAdjustedTime
+                    } else elephantRemainingTime
+
+                    releaseMostPressureWithElephantHelper(
+                        allPaths,
+                        fullTime,
+                        myPath.key.label,
+                        elephantPath.key.label,
+                        myNewRemainingTime,
+                        elephantNewRemainingTime,
+                        currentlyOpenedValves.toMap()
+                    )
+                } else {
+                    openedValves.summarizePressureReleased(allPaths[myValveLabel]!!.keys.associateBy { it.label })
+                }
+            }
+        }.max()
+    }
+
+    private fun Map<String, Int>.summarizePressureReleased(valves: Map<String, Day16Valve>): Int {
+        return this.map { it.value * valves[it.key]!!.flowRate }.sum()
     }
 
     private fun releaseMostPressureHelper(
